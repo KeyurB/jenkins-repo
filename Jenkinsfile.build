@@ -13,15 +13,14 @@ pipeline {
       steps {
         dir("/Users/keyur.barapatre/Documents/terraform-repo") {
           withCredentials([usernamePassword(credentialsId: 'jenkins-build-test-user', passwordVariable: 'secret_key', usernameVariable: 'access_key')]) {
-            steps {
-            sh 'terraform plan --var access_key='${access_key}' --var secret_key='${secret_key}''
-          }
+            sh "terraform plan --var access_key='${access_key}' --var secret_key='${secret_key}'"
         }
       }
       }
     }
     stage("Decision") {
       steps {
+        script {
         userInput = input message: 'Are you sure', parameters: [string(defaultValue: '', description: '', name: 'Yes', trim: false), string(defaultValue: '', description: '', name: 'No', trim: false)]
         if (userInput == 'Yes') {
           dir("/Users/keyur.barapatre/Documents/terraform-repo") {
@@ -33,7 +32,7 @@ pipeline {
         else {
           sh 'echo "Pipeline aborted"'
         }
-
+        }
       }
     }
   }
