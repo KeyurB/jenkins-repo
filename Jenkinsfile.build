@@ -13,7 +13,7 @@ pipeline {
       steps {
         dir("/Users/keyur.barapatre/Documents/terraform-repo") {
           withCredentials([usernamePassword(credentialsId: 'jenkins-build-test-user', passwordVariable: 'secret_key', usernameVariable: 'access_key')]) {
-            sh "/usr/local/bin/terraform plan --var access_key='${access_key}' --var secret_key='${secret_key}'"
+            sh "/usr/local/bin/terraform plan --var access_key=${access_key} --var secret_key=${secret_key}"
         }
       }
       }
