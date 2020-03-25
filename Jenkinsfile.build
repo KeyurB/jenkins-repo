@@ -25,7 +25,7 @@ pipeline {
         id: 'Proceed1', message: 'Was this successful?', parameters: [
         [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
         ])
-        if (userInput == true') {
+        if (userInput == true) {
           dir("/Users/keyur.barapatre/Documents/terraform-repo") {
           withCredentials([usernamePassword(credentialsId: 'jenkins-build-test-user', passwordVariable: 'secret_key', usernameVariable: 'access_key')]) {
             sh 'terraform apply --var access_key='${access_key}' --var secret_key='${secret_key}' -auto-aprove'
