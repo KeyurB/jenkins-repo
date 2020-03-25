@@ -28,7 +28,7 @@ pipeline {
         if (userInput == true) {
           dir("/Users/keyur.barapatre/Documents/terraform-repo") {
           withCredentials([usernamePassword(credentialsId: 'jenkins-build-test-user', passwordVariable: 'secret_key', usernameVariable: 'access_key')]) {
-            sh 'terraform apply --var access_key='${access_key}' --var secret_key='${secret_key}' -auto-aprove'
+            sh '/usr/local/bin/terraform apply --var access_key='${access_key}' --var secret_key='${secret_key}' -auto-aprove'
           }
           } 
         }
