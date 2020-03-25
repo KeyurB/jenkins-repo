@@ -1,0 +1,39 @@
+pipeline {
+  agent any
+
+  stages {
+    stage("Prepare") {
+      checkout scm
+    }
+    stage("Pulling") {
+      dir("/Users/keyur.barapatre/Documents/terraform-repo") {
+        sh 'git checkour master && git pull'
+      }
+    }
+    stage("init") {
+      steps {
+        dir("/Users/keyur.barapatre/Documents/terraform-repo") {
+          withCredentials([usernamePassword(credentialsId: 'jenkins-build-test-user', passwordVariable: 'secret_key', usernameVariable: 'access_key')]) {
+            sh 'terraform plan --var access_key='${access_key}' --var secret_key='${secret_key}''
+          }
+        }
+      }
+    }
+    stage("Decision") {
+      steps {
+        userInput = input message: 'Are you sure', parameters: [string(defaultValue: '', description: '', name: 'Yes', trim: false), string(defaultValue: '', description: '', name: 'No', trim: false)]
+        if (userInput == 'Yes') {
+          dir("/Users/keyur.barapatre/Documents/terraform-repo") {
+          withCredentials([usernamePassword(credentialsId: 'jenkins-build-test-user', passwordVariable: 'secret_key', usernameVariable: 'access_key')]) {
+            sh 'terraform plan --var access_key='${access_key}' --var secret_key='${secret_key}''
+          }
+          } 
+        }
+        else {
+          sh 'echo "Pipeline aborted"'
+        }
+
+      }
+    }
+  }
+}
