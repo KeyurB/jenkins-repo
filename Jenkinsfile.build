@@ -10,6 +10,12 @@ pipeline {
       }
     }
     stage("init") {
+      environment {
+        withCredentials([usernamePassword(credentialsId: 'jenkins-build-test-user', passwordVariable: 'secret_key', usernameVariable: 'access_key')]) {
+        AWS_ACCESS_KEY_ID = "${access_key}"
+        AWS_SECRET_ACCESS_KEY = "${secret_key}"
+        }
+      }
       steps {
         dir("/Users/keyur.barapatre/Documents/terraform-repo") {
           withCredentials([usernamePassword(credentialsId: 'jenkins-build-test-user', passwordVariable: 'secret_key', usernameVariable: 'access_key')]) {
