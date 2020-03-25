@@ -5,7 +5,7 @@ pipeline {
     stage("Pulling") {
       steps {
       dir("/Users/keyur.barapatre/Documents/terraform-repo") {
-        sh 'git checkour master && git pull'
+        sh 'git checkout master && git pull'
       }
       }
     }
