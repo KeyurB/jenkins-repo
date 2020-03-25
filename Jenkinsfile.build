@@ -21,7 +21,10 @@ pipeline {
     stage("Decision") {
       steps {
         script {
-        userInput = input message: 'Are you sure', parameters: [string(defaultValue: '', description: '', name: 'Yes', trim: false), string(defaultValue: '', description: '', name: 'No', trim: false)]
+        userInput = input(
+        id: 'Proceed1', message: 'Was this successful?', parameters: [
+        [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']
+        ])
         if (userInput == 'Yes') {
           dir("/Users/keyur.barapatre/Documents/terraform-repo") {
           withCredentials([usernamePassword(credentialsId: 'jenkins-build-test-user', passwordVariable: 'secret_key', usernameVariable: 'access_key')]) {
